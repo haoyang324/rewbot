@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS `rew`.`property` ( 
+    `address` VARCHAR(80) NOT NULL, 
+    `price` DECIMAL(8) NOT NULL, 
+    `city` VARCHAR(20) NOT NULL, 
+    `province` VARCHAR(20) NOT NULL, 
+    `postal_code` VARCHAR(7), 
+    `bed` VARCHAR(4) NOT NULL, 
+    `bath` VARCHAR(4) NOT NULL, 
+    `sqft` DECIMAL(8), 
+    `type` VARCHAR(20) NOT NULL, 
+    `built_in` SMALLINT, 
+    `area` VARCHAR(20), 
+    `sub_area` VARCHAR(20), 
+    `style` VARCHAR(80), 
+    `depth` VARCHAR(20), 
+    `frontage` VARCHAR(20), 
+    `url` VARCHAR(255), 
+    PRIMARY KEY (`address`)) ENGINE = InnoDB;
