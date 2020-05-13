@@ -4,7 +4,6 @@
 from bs4 import BeautifulSoup
 import time
 import re
-from decimal import Decimal
 
 import downloader
 import htmlparser
@@ -20,8 +19,11 @@ def main(entrance_url):
             print("Working on " + url)
             html = downloader.get_html(url)
             property_dict = htmlparser.parse_content(html)
-            property_dict['url'] = url
-            database.write_data(property_dict)
+            if property_dict:
+                property_dict['url'] = url
+                database.write_data(property_dict)
+            else: 
+                print("Nothing here " + url)
 #         else: 
 #             print("Already have it " + url)
     print("Done with " + entrance_url)
@@ -29,8 +31,12 @@ def main(entrance_url):
     next_page_url = htmlparser.get_next_page_urls(current_page)
     if next_page_url:
         main(next_page_url)
-        
 
 
 if __name__ == '__main__':
-    main('https://www.rew.ca/properties/areas/vancouver-bc')
+    with open('bc_sub_area_list.txt', 'r+') as fd:
+        for line in fd:   
+            main("https://www.rew.ca/properties/areas/" + line.strip())
+        # fd.truncate(0)
+    # main('https://www.rew.ca/properties/areas/vancouver-bc')
+

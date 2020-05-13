@@ -19,8 +19,12 @@ def get_next_page_urls(html):
 
 def parse_content(html):
     soup = BeautifulSoup(html,"html.parser")
-    
+
+    if not soup.select_one(".propertyheader-address > span"):
+        return None
+
     property_dict = {}
+    
     property_dict['address'] = soup.select_one(".propertyheader-address > span").string.strip()
     property_dict['price'] = re.sub(r'[^\d.]', '', soup.select_one(".propertyheader-price").string.strip())
     property_dict['city'] = soup.select(".propertyheader-secondary span")[0].string.strip()
@@ -28,7 +32,7 @@ def parse_content(html):
     property_dict['postal_code'] = soup.select(".propertyheader-secondary span")[2].string.strip() if len(soup.select(".propertyheader-secondary span")) == 3 else None
     property_dict['bed'] = soup.select(".clearfix strong")[0].string.strip()
     property_dict['bath'] = soup.select(".clearfix strong")[1].string.strip()
-    property_dict['sqft'] = soup.select(".clearfix strong")[2].string.strip()
+    property_dict['sqft'] = soup.select(".clearfix strong")[2].string.strip() if soup.select(".clearfix strong")[2].string.strip() != 'N/A' else 0
     property_dict['type'] = soup.select(".clearfix strong")[3].string.strip()
 
     property_age_tag = soup.find('th', text="Property Age")
